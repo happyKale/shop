@@ -15,8 +15,11 @@ function Product(props: {
 }) {
   const { image, brand, name, original_price, sales_price } = props;
 
-  const discount_rate =
-    Math.round((100 - (100 * sales_price) / original_price) * 100) / 100;
+  let discount_rate = 0;
+  if (original_price !== 0) {
+    discount_rate =
+      Math.round((100 - (100 * sales_price) / original_price) * 100) / 100;
+  }
 
   return (
     <Container>
