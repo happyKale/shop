@@ -202,7 +202,6 @@ function HomeScreen() {
     }
     setClickedFilterData({ ...clickedFilterData, page: pageNum });
     handleProductData({ ...clickedFilterData, page: pageNum });
-    console.log(product, clickedFilterData, pageNum);
   };
 
   return (
@@ -333,8 +332,10 @@ function HomeScreen() {
             {"<"}
           </button>
           {/* 
-            NOTE: 존재하는 페이지 번호만 보이도록 바꿔야됨. 지금은 5개 버튼이 다 보여진다. 
-                  예를들어, 3페이지까지만 있어도 5페이지 버튼까지 보여지는 중.
+            NOTE: 1. 존재하는 페이지 번호만 보이도록 바꿔야됨. 지금은 5개 버튼이 다 보여진다. 
+                     예를들어, 3페이지까지만 있어도 5페이지 버튼까지 보여지는 중.
+                  2. 화살표 버튼을 누르면 1, 6, 11페이지씩 5페이지를 뛰어넘어서 제품을 가져와야된다.
+                     아직 구현하지 못했음.
           */}
           <button onClick={handlePage}>{1 + page.nowPage}</button>
           <button onClick={handlePage}>{2 + page.nowPage}</button>
