@@ -50,6 +50,7 @@ function HomeScreen() {
       id: number;
       parent_id: number | null;
       children: Array<{ name: string; id: number; parent_id: number | null }>;
+      isOpen: boolean;
     }>;
   }>({ brand: [], color: [], category: [] });
 
@@ -119,6 +120,9 @@ function HomeScreen() {
         let position = treeCategory.findIndex(
           (element: any) => element.id === category[i].parent_id
         );
+        if (!treeCategory[position].isOpen) {
+          treeCategory[position].isOpen = false;
+        }
         if (!treeCategory[position].children) {
           treeCategory[position].children = [];
         }
@@ -169,26 +173,47 @@ function HomeScreen() {
                       id: number;
                       parent_id: number | null;
                     }>;
+                    isOpen: boolean;
                   },
                   idx
                 ) => {
                   return (
-                    <li key={idx}>
+                    <li
+                      key={idx}
+                      className="subCategory"
+                      onClick={(event) => {
+                        if (event.target === event.currentTarget) {
+                          let newCateroy = filter.category.map((c) => {
+                            if (c.name === item.name) {
+                              return { ...c, isOpen: c.isOpen ? false : true };
+                            } else {
+                              return c;
+                            }
+                          });
+                          setFilter({
+                            ...filter,
+                            category: newCateroy,
+                          });
+                        }
+                      }}
+                    >
                       {item.name}
-                      <StyledUl>
-                        {item.children.map((element, idx) => {
-                          return (
-                            <li
-                              key={idx}
-                              onClick={handleClickFilter}
-                              className="categoryId"
-                              id={`${element.id}`}
-                            >
-                              {element.name}
-                            </li>
-                          );
-                        })}
-                      </StyledUl>
+                      {item.isOpen && (
+                        <StyledUl>
+                          {item.children.map((element, idx) => {
+                            return (
+                              <li
+                                key={idx}
+                                onClick={handleClickFilter}
+                                className="categoryId"
+                                id={`${element.id}`}
+                              >
+                                {element.name}
+                              </li>
+                            );
+                          })}
+                        </StyledUl>
+                      )}
                     </li>
                   );
                 }
@@ -218,7 +243,9 @@ function HomeScreen() {
             return <Product key={item.id} {...item} />;
           })}
         </ProductContainer>
-        <div>페이지 네이션</div>
+        <div>
+          <div></div>
+        </div>
       </div>
       <FilterBox>
         <StyledFilterName id="color" onClick={handleFilterOpen}>
