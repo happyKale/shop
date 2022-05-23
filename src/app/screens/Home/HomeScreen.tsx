@@ -55,6 +55,9 @@ function HomeScreen() {
     }>;
   }>({ brand: [], color: [], category: [] });
 
+  // 선택된 서브 카테고리 이름
+  const [subCategory, setSubCategory] = useState("");
+
   // effect
   useEffect(() => {
     handleFilterData();
@@ -134,23 +137,43 @@ function HomeScreen() {
   };
 
   // 선택한 필터 업데이트.
-  const handleClickFilter = (e: React.MouseEvent<HTMLLIElement>) => {
+  const handleClickFilter = (
+    e: React.MouseEvent<HTMLLIElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
     const target = e.currentTarget;
-    setClickedFilterData({
-      ...clickedFilterData,
-      [target.className]:
-        target.className === "categoryId"
-          ? Number(target.id)
-          : target.textContent,
-    });
-
-    handleProductData({
-      ...clickedFilterData,
-      [target.className]:
-        target.className === "categoryId"
-          ? Number(target.id)
-          : target.textContent,
-    });
+    if (target.tagName === "BUTTON") {
+      if (target.id === "categoryId") {
+        setSubCategory("");
+      }
+      setClickedFilterData({
+        ...clickedFilterData,
+        [target.id]: "",
+      });
+      handleProductData({
+        ...clickedFilterData,
+        [target.id]: "",
+      });
+    } else {
+      // NOTE: 선택한 서브 카테고리에 이름을 넣어야되는데 못 넣음.
+      // 이름 대신 아이디를 넣음. 이름으로 바꿔야 함.
+      if (target.className === "categoryId") {
+        setSubCategory(target.id);
+      }
+      setClickedFilterData({
+        ...clickedFilterData,
+        [target.className]:
+          target.className === "categoryId"
+            ? Number(target.id)
+            : target.textContent,
+      });
+      handleProductData({
+        ...clickedFilterData,
+        [target.className]:
+          target.className === "categoryId"
+            ? Number(target.id)
+            : target.textContent,
+      });
+    }
   };
 
   return (
@@ -238,6 +261,30 @@ function HomeScreen() {
       </div>
       <div>
         <div>가격 맞추기</div>
+        <CategoryBox>
+          <div>
+            {`선택한 카테고리: ${subCategory ? subCategory : "없음!"}`}
+            <DeleteButton id="categoryId" onClick={handleClickFilter}>
+              삭제
+            </DeleteButton>
+          </div>
+          <div>
+            {`선택한 브랜드: ${
+              clickedFilterData.brand ? clickedFilterData.brand : "없음!"
+            }`}
+            <DeleteButton id="brand" onClick={handleClickFilter}>
+              삭제
+            </DeleteButton>
+          </div>
+          <div>
+            {`선택한 색: ${
+              clickedFilterData.color ? clickedFilterData.color : "없음!"
+            }`}
+            <DeleteButton id="color" onClick={handleClickFilter}>
+              삭제
+            </DeleteButton>
+          </div>
+        </CategoryBox>
         <ProductContainer>
           {product.list.map((item) => {
             return <Product key={item.id} {...item} />;
@@ -307,6 +354,17 @@ const ProductContainer = styled.div`
   gap: 20px;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(4, 300px);
+`;
+
+const DeleteButton = styled.button`
+  margin-left: 10px;
+`;
+
+const CategoryBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+  padding: 10px;
 `;
 
 export { HomeScreen };
