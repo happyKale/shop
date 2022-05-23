@@ -16,6 +16,11 @@ const productRepository = {
       return res;
     });
   },
+  getProduct(params: any) {
+    return httpClient.get("/products", params).then((res) => {
+      return res;
+    });
+  },
 };
 
 export { productRepository };
