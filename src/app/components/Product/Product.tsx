@@ -15,6 +15,7 @@ function Product(props: {
 }) {
   const { image, brand, name, original_price, sales_price } = props;
 
+  let price = sales_price.toLocaleString();
   let discount_rate = 0;
   if (original_price !== 0) {
     discount_rate =
@@ -26,7 +27,7 @@ function Product(props: {
       <Image src={image} alt={name} margin="0 0 20px 0" />
       <StyledSpan>브랜드: {brand}</StyledSpan>
       <StyledSpan>상품명: {name}</StyledSpan>
-      <StyledSpan>판매가: {sales_price}</StyledSpan>
+      <StyledSpan>판매가: {price}원</StyledSpan>
       <StyledSpan>할인율: {discount_rate}%</StyledSpan>
     </Container>
   );
