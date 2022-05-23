@@ -13,10 +13,10 @@ function Product(props: {
   sales_price: number;
   retailer_id: number;
 }) {
-  const { id, image, brand, name, original_price, sales_price } = props;
+  const { image, brand, name, original_price, sales_price } = props;
 
   return (
-    <Container key={id}>
+    <Container>
       <Image src={image} alt={name} />
       <StyledSpan>{brand}</StyledSpan>
       <StyledSpan>{name}</StyledSpan>
