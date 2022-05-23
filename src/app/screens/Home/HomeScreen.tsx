@@ -58,6 +58,17 @@ function HomeScreen() {
   // 선택된 서브 카테고리 이름
   const [subCategory, setSubCategory] = useState("");
 
+  // 페이지네이션 값
+  const [page, setPage] = useState<{
+    firstPage: number;
+    nowPage: number;
+    lastPage: number;
+  }>({
+    firstPage: 1,
+    nowPage: 0,
+    lastPage: 0,
+  });
+
   // effect
   useEffect(() => {
     handleFilterData();
@@ -78,6 +89,7 @@ function HomeScreen() {
       .getProduct({ ...filterData })
       .then((res: any) => res.data);
     setProduct({ list: product.products, size: product.total });
+    setPage({ ...page, lastPage: Math.ceil(product.total / 20) });
   };
 
   // 필터의 열림, 닫힘을 제어.
@@ -148,10 +160,12 @@ function HomeScreen() {
       setClickedFilterData({
         ...clickedFilterData,
         [target.id]: "",
+        page: 1,
       });
       handleProductData({
         ...clickedFilterData,
         [target.id]: "",
+        page: 1,
       });
     } else {
       // NOTE: 선택한 서브 카테고리에 이름을 넣어야되는데 못 넣음.
@@ -165,6 +179,7 @@ function HomeScreen() {
           target.className === "categoryId"
             ? Number(target.id)
             : target.textContent,
+        page: 1,
       });
       handleProductData({
         ...clickedFilterData,
@@ -172,8 +187,22 @@ function HomeScreen() {
           target.className === "categoryId"
             ? Number(target.id)
             : target.textContent,
+        page: 1,
       });
     }
+  };
+
+  // 페이지네이션
+  const handlePage = (e: React.MouseEvent<HTMLButtonElement>) => {
+    let pageNum = Number(e.currentTarget.innerText);
+    if (e.currentTarget.id === "firstPage") {
+      pageNum = page.firstPage;
+    } else if (e.currentTarget.id === "lastPage") {
+      pageNum = Math.floor(page.lastPage);
+    }
+    setClickedFilterData({ ...clickedFilterData, page: pageNum });
+    handleProductData({ ...clickedFilterData, page: pageNum });
+    console.log(product, clickedFilterData, pageNum);
   };
 
   return (
@@ -290,9 +319,41 @@ function HomeScreen() {
             return <Product key={item.id} {...item} />;
           })}
         </ProductContainer>
-        <div>
-          <div></div>
-        </div>
+        <PageNation>
+          <button id="firstPage" onClick={handlePage}>
+            맨처음
+          </button>
+          <button
+            onClick={() => {
+              if (page.nowPage !== 0) {
+                setPage({ ...page, nowPage: page.nowPage - 5 });
+              }
+            }}
+          >
+            {"<"}
+          </button>
+          {/* 
+            NOTE: 존재하는 페이지 번호만 보이도록 바꿔야됨. 지금은 5개 버튼이 다 보여진다. 
+                  예를들어, 3페이지까지만 있어도 5페이지 버튼까지 보여지는 중.
+          */}
+          <button onClick={handlePage}>{1 + page.nowPage}</button>
+          <button onClick={handlePage}>{2 + page.nowPage}</button>
+          <button onClick={handlePage}>{3 + page.nowPage}</button>
+          <button onClick={handlePage}>{4 + page.nowPage}</button>
+          <button onClick={handlePage}>{5 + page.nowPage}</button>
+          <button
+            onClick={() => {
+              if (page.nowPage + 5 <= page.lastPage) {
+                setPage({ ...page, nowPage: page.nowPage + 5 });
+              }
+            }}
+          >
+            {">"}
+          </button>
+          <button id="lastPage" onClick={handlePage}>
+            맨마지막
+          </button>
+        </PageNation>
       </div>
       <FilterBox>
         <StyledFilterName id="color" onClick={handleFilterOpen}>
@@ -365,6 +426,16 @@ const CategoryBox = styled.div`
   justify-content: space-between;
   border: 1px solid black;
   padding: 10px;
+`;
+
+const PageNation = styled.div`
+  height: 100px;
+  & > div {
+    border: 1px solid orange;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export { HomeScreen };
