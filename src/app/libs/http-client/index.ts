@@ -18,14 +18,18 @@ export const httpClient = (() => {
   });
 
   return {
-    async get<T>(url: string): Promise<T> {
-      return await instance.get(url);
-    },
-    async post<T>(
+    async get<T>(
       url: string,
-      data: Record<string, string | number>
+      params?: {
+        page: number;
+        color: string;
+        maxPrice: number;
+        minPrice: number;
+        brand: string;
+        categoryId: number;
+      }
     ): Promise<T> {
-      return await instance.post(url, data);
+      return await instance.get(url, { params });
     },
   };
 })();
