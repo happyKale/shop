@@ -17,6 +17,8 @@
 <img width="184" alt="CATEGORIES" src="https://user-images.githubusercontent.com/43086867/169847431-8030db6e-3098-457e-8090-92942229bd7c.png">
 <img width="185" alt="furniture" src="https://user-images.githubusercontent.com/43086867/169847471-e9a98320-e95a-42f7-81f0-67c162db97ae.png">
 <img width="188" alt="furniture" src="https://user-images.githubusercontent.com/43086867/169847509-a57c4fe4-4765-4546-874e-b7108e5742ee.png">
+3. 페이지네이션
+<img width="393" alt="image" src="https://user-images.githubusercontent.com/43086867/169880938-94963e36-ad40-4de6-aa84-3ebe2550edad.png">
 
 
 
@@ -30,6 +32,10 @@
 - 선택한 필터 옆에 있는 삭제 버튼을 누르면 해당 필터의 적용이 해제된다.
 - 카테고리 필터
   - 카테고리 필터는 아코디언 메뉴로 보여진다.
+2. 페이지네이션
+- 페이지 버튼을 클릭하면 페이지에 해당하는 제품들을 보여준다.
+- 화살표 버튼을 누르면 페이지 버튼의 숫자가 5씩 이동한다.
+- 맨처음, 맨마지막 버튼을 누르면 첫 페이지와 마지막 페이지로 이동한다.
 
 <br/>
 
@@ -50,7 +56,10 @@
 - 페이지가 5개 이상이라면 다음 페이지(1부터 5까지 보여줬다면 이 다음은 6부터 10까지 보여줄 수 있도록)로 넘기기 위해서 그 다음 페이지 목록으로 넘어가는 버튼도 있어야 할 것 같습니다.<br/>
   다음 페이지 목록으로 넘어가면 보여지는 페이지 숫자가 변해야 하기 때문에 setState()를 사용해서 state를 만들어서 현재 보여지는 페이지를 담아야할 것 같습니다.<br/>
 - 페이지 버튼을 누를 때 마다 api 요청을 다시 보내야 하기 때문에 현재 사용하고 있는 <br/>
-  선택한 필터를 제어하는 handleClickFilter 핸들러를 수정해서 사용해야 하지 않을까 싶습니다.
+  선택한 필터를 제어하는 handleClickFilter 핸들러를 수정해서 사용해야 하지 않을까 싶습니다. <br/><br/>
+=> 현재 구현하였지만, 아직 수정할 부분이 있습니다! 
+<img width="540" alt="image" src="https://user-images.githubusercontent.com/43086867/169882733-947f79d8-2c5a-4699-9f6b-af9851ff04ce.png">
+
   
 2. 가격 필터 <br/>
 html input 태그의 type="range" 속성을 사용해서 구현할 수 있을 것 같습니다.
