@@ -6,8 +6,8 @@ import { Product } from "../../components";
 function HomeScreen() {
   // state
   // 필터가 적용된 제품
-  const [product, setProduct] = useState<
-    {
+  const [product, setProduct] = useState<{
+    list: {
       brand: string;
       category_id: number;
       color: string;
@@ -17,8 +17,9 @@ function HomeScreen() {
       original_price: number;
       retailer_id: number;
       sales_price: number;
-    }[]
-  >([]);
+    }[];
+    size: number;
+  }>({ list: [], size: 0 });
 
   // 선택된 필터
   const [clickedFilterData, setClickedFilterData] = useState<{
@@ -73,8 +74,7 @@ function HomeScreen() {
     const product = await productRepository
       .getProduct({ ...filterData })
       .then((res: any) => res.data);
-
-    setProduct(product.products);
+    setProduct({ list: product.products, size: product.total });
   };
 
   // 필터의 열림, 닫힘을 제어.
@@ -239,7 +239,7 @@ function HomeScreen() {
       <div>
         <div>가격 맞추기</div>
         <ProductContainer>
-          {product.map((item) => {
+          {product.list.map((item) => {
             return <Product key={item.id} {...item} />;
           })}
         </ProductContainer>
